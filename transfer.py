@@ -10,24 +10,33 @@ geneDict = {'AA': '00000000001',\
 			'AG': '0001000000',	'GA': '0001000000',\
 			'TC': '0010000000',	'CT': '0010000000',\
 			'TG': '0100000000',	'GT': '0100000000',\
-			'CG': '1000000000', 'GC': '1000000000' \
+			'CG': '1000000000', 'GC': '1000000000'\
 }
 
 fname = sys.argv[1]
-df = pd.read_csv(fname, sep=' ')
+#df = pd.read_csv(fname, sep=' ')
 
-print len(df)
+#print len(df)
 #print df.head()
 #a = df.index[1]
 #b = df.columns[1]
 #print df[b][0]
 
-def encode_gene(data, geneDict):
-	for c in data.columns:
-		for i in data.index:
-			data[c][i] = geneDict[data[c][i]]
-	return data
+def encode_gene(fname):
+	fr, i = open(fname), 0
+	fw = open('encoded_' + fname, 'w')
+	for line in fr:
+		if i > 0:
+			tmp = line.strip().split(' ')
+			for j in range(len(tmp)):
+				if tmp[j] in geneDict:
+					tmp[j] = geneDict[tmp[j]]
+			fw.write(' '.join(tmp) + '\n')
+		else:
+			fw.write(line)
+		i += 1
 
-df = encode_gene(df, geneDict)
+encode_gene(fname)
 
-df.to_csv('encoded_' + fname)
+print 'complete'
+#df.to_csv('encoded_' + fname)
