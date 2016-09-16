@@ -39,24 +39,53 @@ def encode_gene(fname):
 			fw.write(line)
 		i += 1
 
+def fre_trans(fname):
+	fr, cnt = open(fname), 0
+	gList, gMat = [[] for i in range(cols)], []
+	fw = open('myRst.txt', 'a')
+	for line in fr:
+		if cnt > 0:
+			tmp = line.strip().split(' ')
+			gMat.append(tmp)
+			for j in range(len(tmp)):
+				gList[j].append(tmp[j])
+		else:
+			fw.write(line)
+		cnt += 1
+	for i in range(cols):
+		dick = {}
+		for j in range(rows):
+			if gList[i][j] not in dick:
+				dick[gList[i][j]] = 1
+			else:
+				dick[gList[i][j]] += 1
+		for k in range(rows):
+			gMat[k][i] = repr(float(dick[gMat[k][i]]) / rows)[:4]
+	
+	for i in range(rows):
+		tmp = ' '.join(gMat[i])
+		fw.write(tmp + '\n')
+
 def recover(fname):
 	fr = open(fname)
-	gList, i = [[] for i in range(cols)], 0 # cols * rows
+	gList, cnt = [[] for i in range(cols)], 0 # cols * rows
 	for line in fr:
-		if i > 0:
+		if cnt > 0:
 			tmp = line.strip().split(' ')
 			for j in range(len(tmp)):
-				if tmp[j] in geneDict.values():
-					gList[j].append(int(tmp[j], 2) + 1)
-				else:
-					gList[j].append(15)
-		i += 1
+				#if tmp[j] in geneDict.values():
+					#gList[j].append(int(tmp[j], 2) + 1)
+				#else:
+				#	gList[j].append(15)
+				gList[j].append(float(tmp[j]))
+		cnt += 1
 	return gList
 
 def dispersion(gList):
 	avg, std = [], []
+	print len(gList), len(gList[0])
 	for i in range(cols):
-		average, tmp = float(sum(gList[i])) / rows, 0
+		average, tmp = sum(gList[i]) / rows, 0
 		for j in range(rows):
 			tmp += (gList[i][j] - average) ** 2
 		avg.append(average)
@@ -74,6 +103,7 @@ if __name__ == '__main__':
 	#encode_gene(fname)
 	gList = recover(fname)
 	dispersion(gList)
+	#fre_trans(fname)
 
 	print 'complete'
 #df.to_csv('encoded_' + fname)
