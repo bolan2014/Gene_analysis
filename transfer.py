@@ -56,13 +56,11 @@ def recover(fname):
 def dispersion(gList):
 	avg, std = [], []
 	for i in range(cols):
-		tmp, temp = 0, 0
+		average, tmp = float(sum(gList[i])) / rows, 0
 		for j in range(rows):
-			tmp += gList[i][j]
-			temp += gList[i][j] ** 2
-		average = float(tmp) / rows
+			tmp += (gList[i][j] - average) ** 2
 		avg.append(average)
-		std.append(abs(temp / rows - average ** 2) ** 0.5)
+		std.append((tmp / rows) ** 0.5)
 	fw = open('rst.txt', 'w')
 	for i in range(len(avg)):
 		cv = std[i] / avg[i] * 100
