@@ -1,5 +1,4 @@
 import sys
-import pandas as pd
 
 geneDict = {'AA': '0000',\
 			'TT': '0001',\
