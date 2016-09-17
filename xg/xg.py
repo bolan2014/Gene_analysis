@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.svm import SVC
 import xgboost as xgb
 
 
@@ -31,17 +30,17 @@ def read_rs(filename):
 def random_train_and_test(data, label):
     datas = []
     for i in range(len(data)):
-        datas.append(data[i])
+        datas.append(data[i][:])
         datas[i].append(label[i])
 
     import random
     random.shuffle(datas)
-    count = int(0.9 * len(data))
+    count = int(0.9 * len(datas))
     return np.array(datas[:count]), np.array(datas[count:])
 
 
 def train_iter(iter, qis, types):
-    print "======== iter " + str(x) + " ========"
+    print "======== iter " + str(iter) + " ========"
     train, test = random_train_and_test(qis, types)
     train_data = train[0: len(train), 0: len(train[0]) - 1]
     train_label = train[:, -1]
@@ -59,24 +58,21 @@ def train_iter(iter, qis, types):
 
     dtrain = xgb.DMatrix(train_data, label=train_label)
     dtest = xgb.DMatrix(test_data)
-    param = {'max_depth': 5, 'eta': 1, 'silent': 1, 'objective': 'binary:logistic'}
-    num_round = 10
+    param = {'max_depth': 10, 'eta': 1, 'silent': 1, 'objective': 'binary:logistic'}
+    num_round = 20
     bst = xgb.train(param, dtrain, num_round)
     preds = bst.predict(dtest)
-    # print test_label
-    # print preds
     correct = 0
     for j in range(len(preds)):
+        r = 0
         if preds[j] >= 0.5:
             r = 1
-        else:
-            r = 0
         if r == test_label[j]:
             correct += 1
     print correct * 1.0 / len(test_data)
 
 
-if __name__ == '__main__':
+def main():
     types = read_phenotype('../data/phenotype.txt')
     qis = read_qi('../data/qi.txt')
     # rss = read_rs('../data/genotype.dat')
@@ -84,4 +80,7 @@ if __name__ == '__main__':
     iter = 30
     for x in range(iter):
         train_iter(x, qis, types)
+
+
+main()
 
