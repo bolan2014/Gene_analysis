@@ -11,11 +11,13 @@ def read_phenotype(filename):
 
 
 def read_qi(filename):
-    qi = []
+    qi, cnt = [], 0
     with open(filename) as f:
         first = True
         for line in f:
-            qi.append(map(lambda x : float(x), line.strip().split(' ')))
+            if cnt > 0:
+                qi.append(map(lambda x : float(x), line.strip().split(' ')))
+            cnt += 1
     return qi
 
 
@@ -74,7 +76,8 @@ def train_iter(iter, qis, types):
 
 def main():
     types = read_phenotype('../data/phenotype.txt')
-    qis = read_qi('../data/qi.txt')
+    # qis = read_qi('../data/qi.txt')
+    qis = read_qi('../myRst.txt')
     # rss = read_rs('../data/genotype.dat')
 
     iter = 30
