@@ -41,7 +41,7 @@ def encode_gene(fname):
 def fre_trans(fname):
 	fr, cnt = open(fname), 0
 	gList, gMat = [[] for i in range(cols)], []
-	fw = open('myRst.txt', 'a')
+	fw = open('encoded_myRst.txt', 'w')
 	for line in fr:
 		if cnt > 0:
 			tmp = line.strip().split(' ')
@@ -55,11 +55,13 @@ def fre_trans(fname):
 		dick = {}
 		for j in range(rows):
 			if gList[i][j] not in dick:
-				dick[gList[i][j]] = 1
-			else:
-				dick[gList[i][j]] += 1
+				#dick[gList[i][j]] = 1
+				dick[gList[i][j]] = len(dick) + 1
+			#else:
+			#	dick[gList[i][j]] += 1
 		for k in range(rows):
-			gMat[k][i] = repr(float(dick[gMat[k][i]]) / rows)[:4]
+			#gMat[k][i] = repr(float(dick[gMat[k][i]]) / rows)[:4]
+			gMat[k][i] = repr(dick[gMat[k][i]])
 	
 	for i in range(rows):
 		tmp = ' '.join(gMat[i])
@@ -100,9 +102,9 @@ def dispersion(gList):
 		 
 if __name__ == '__main__':
 	#encode_gene(fname)
-	gList = recover(fname)
-	dispersion(gList)
-	#fre_trans(fname)
+	#gList = recover(fname)
+	#dispersion(gList)
+	fre_trans(fname)
 
 	print 'complete'
 #df.to_csv('encoded_' + fname)
