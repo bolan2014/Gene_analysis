@@ -18,10 +18,10 @@ def save_phenotype_2(phenotype_file_path, multiphenos_file_path):
     fopw = open('phenotype_2.txt', 'w')
     for i in range(len(phenotype)):
         if int(phenotype[i]) == 1:
-            m = multiphones[i]
+            m = multiphenos[i]
             flag = 1
             for j in m:
-                if str(j) == 0:
+                if int(j) == 0:
                     flag = 0
                     break
             fopw.write(str(flag) + '\n')
@@ -30,3 +30,7 @@ def save_phenotype_2(phenotype_file_path, multiphenos_file_path):
     fopw.close()
 
 
+if __name__ == "__main__":
+    phenotype_file_path = 'phenotype.txt'
+    multiphenos_file_path = 'multi_phenos.txt'
+    save_phenotype_2(phenotype_file_path, multiphenos_file_path)
