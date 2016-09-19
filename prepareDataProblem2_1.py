@@ -53,7 +53,7 @@ if __name__ == "__main__":
             count[i].append(0)
 
     genotype = read_genotype('genotype.dat')
-    phenotype = read_phenotype('phenotype_2.txt')
+    phenotype = read_phenotype('phenotype.txt')
 
     #每一行表示源文件每一列中的每个碱基对的数量总数
     fopw = open('third_copy_genotype.txt', 'w')

@@ -3,9 +3,9 @@ import sys, time
 import prepareDataProblem2_1
 
 #有病
-target1 = 100
+target1 = 330
 #没病
-target2 = 500
+target2 = 340
 
 rows = 1000
 cols = 9445
@@ -35,7 +35,7 @@ for line in open('third_copy_genotype.txt'):
         index += 1
     for k, v in count_0.items():
         if int(count_0[k]) < target2 and int(count_1[k]) >= target1:
-            print "bingo [ " + str(line_no) + " ]"
+            print "2 bingo [ " + str(line_no) + " ]"
             fopw.write(str(line_no)+'\n')
             cnt_to_analyse += 1
             break
