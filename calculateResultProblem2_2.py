@@ -1,6 +1,6 @@
 #coding=utf-8
 import sys, time
-import prepareData
+import prepareDataProblem2_1
 
 #有病
 target1 = 310
@@ -20,8 +20,8 @@ fopw = open('selectedColumnNumber.txt', 'w')
 print 'analyse start...'
 
 for line in open('third_copy_genotype.txt'):
-    count_1 = prepareData.init_acgt()
-    count_0 = prepareData.init_acgt()
+    count_1 = prepareDataProblem2_1.init_acgt()
+    count_0 = prepareDataProblem2_1.init_acgt()
     line = fopr.readline()
     line = line.strip().split(' ')
     index = 0
@@ -34,7 +34,7 @@ for line in open('third_copy_genotype.txt'):
             count_1[line[index]] = line[index + 1]
         index += 1
     for k, v in count_0.items():
-        if int(count_0[k]) < target2 and int(count_1[k]) >= target1:
+        if int(count_1[k]) < target2 and int(v) >= target1:
             print "bingo [ " + str(line_no) + " ]"
             fopw.write(str(line_no)+'\n')
             cnt_to_analyse += 1

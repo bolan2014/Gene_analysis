@@ -80,13 +80,12 @@ for f in files:
                 count += 1
         gene_dict[str(f)] = count
 
-#gene_dict = [v for v in sorted(gene_dict.values())]
 fopw = open('filteredGene.arff', 'w')
 for k, v in gene_dict.items():
     fopw.write(str(k)+":"+str(v)+'\n')
 fopw.close()
-
-#print gene_dict
+gene_dict = [v for v in sorted(gene_dict.values())]
+print gene_dict
 
 #验证基因中位点交叉
 m1 = get_all_gene(folder_path)

@@ -108,12 +108,13 @@ if __name__ == "__main__":
                     count[j][i] = count_cols0[cur]
     fopw.close()
 
-    fopw = open('secode_copy_genotype.txt', 'w')
-    print 'start write file:' + 'count_genotype.txt' + '...'
+    count_genotype_file_name = 'secode_copy_genotype.txt'
+    fopw = open(count_genotype_file_name, 'w')
+    print 'start write file:' + count_genotype_file_name + '...'
     for i in range(rows):
         for j in range(cols):
             fopw.write(str(count[i][j]))
             fopw.write(' ')
         fopw.write('\n')
     fopw.close
-    print 'finish write file:' + 'count_genotype.txt' + '...'
+    print 'finish write file:' + count_genotype_file_name + '...'
