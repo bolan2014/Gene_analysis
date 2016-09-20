@@ -2,10 +2,27 @@
 import sys, time
 import prepareDataProblem2_1
 
+def read_genotype(file_name):
+    print 'start read file:' + file_name + '...'
+    matrix = None
+    cur_no = 1
+    fopr = open(file_name)
+    for line in open(file_name):
+        line = fopr.readline()
+        if cur_no == 1:
+            cur_no += 1
+            line = line.strip().split(' ')
+            matrix = line
+            break
+    print 'finish read file:' + file_name + '...'
+    print 'matrix size = ' + str(len(matrix))
+    #time.sleep(5)
+    return matrix
+
 #有病
-target1 = 330
+target1 = 310
 #没病
-target2 = 340
+target2 = 300
 
 rows = 1000
 cols = 9445
@@ -18,6 +35,8 @@ cnt_to_analyse = 0
 fopw = open('selectedColumnNumber.txt', 'w')
 
 print 'analyse start...'
+
+column_name = read_genotype('genotype.dat')
 
 for line in open('third_copy_genotype.txt'):
     count_1 = prepareDataProblem2_1.init_acgt()
@@ -37,6 +56,7 @@ for line in open('third_copy_genotype.txt'):
         if int(count_0[k]) < target2 and int(count_1[k]) >= target1:
             print "2 bingo [ " + str(line_no) + " ]"
             fopw.write(str(line_no)+'\n')
+            #fopw.write(str(column_name[line_no])+'\n')
             cnt_to_analyse += 1
             break
     line_no += 1

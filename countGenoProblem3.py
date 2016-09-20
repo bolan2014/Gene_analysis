@@ -21,6 +21,25 @@ def read_genotype_column_name(file_name):
     #time.sleep(5)
     return matrix
 
+def read_genotype_column_name_dict(file_name):
+    print 'start read file:' + file_name + '...'
+    matrix = {}
+    cur_no = 1
+    fopr = open(file_name)
+    for line in open(file_name):
+        line = fopr.readline()
+        if cur_no == 1:
+            cur_no += 1
+            if line != "" or line is not None:
+                line = line.strip().split(' ')
+                cur_no += 1
+                for i in range(len(line)):
+                    matrix[line[i]] = i
+                break
+    print 'finish read file:' + file_name + '...'
+    print 'matrix size = ' + str(len(matrix))
+    #time.sleep(5)
+    return matrix
 
 def get_selected_column_name(genotype_file_path, selected_column_file_path):
     selected_column_number = []
@@ -49,6 +68,20 @@ def get_all_gene(folder_path):
     return matrix
 
 
+def get_all_gene_dict(folder_path):
+    matrix = {}
+    files = os.listdir(folder_path)
+    for f in files:
+        m = []
+        with open(folder_path + "/" + f):
+            for cname in f:
+                cname = cname.strip()
+                if cname != None and cname != "":
+                    m.append(cname)
+        matrix[str(f)] = m
+    return matrix
+
+
 genotype_file_path = 'genotype.dat'
 selected_column_file_path = 'selectedColumnNumber.txt'
 selected_column_name = get_selected_column_name(genotype_file_path, selected_column_file_path)
@@ -69,6 +102,37 @@ for f in files:
                 break
 print "count gene's number is [ " + str(count_gene) + " ]"
 
+
+#获取每个基因含有的致病位点的名称
+fopw = open('filteredGeneName.arff', 'w')
+for f in files:
+    with open(folder_path + "/" + f) as fopr:
+        count = 0
+        for cname in fopr:
+            cname = cname.strip()
+            if cname != None and cname != "" and cname in selected_column_name:
+                fopw.write(cname+' ')
+                count += 1
+        if count > 0:
+            fopw.write('\n')
+fopw.close()
+
+#获取每个基因含有的致病位点的列的编号
+matrix = read_genotype_column_name_dict(genotype_file_path)
+fopw = open('filteredGeneNumber.arff', 'w')
+for f in files:
+    with open(folder_path + "/" + f) as fopr:
+        count = 0
+        for cname in fopr:
+            cname = cname.strip()
+            if cname != None and cname != "" and cname in selected_column_name:
+                fopw.write(str(matrix[cname])+' ')
+                count += 1
+        if count > 0:
+            fopw.write('\n')
+fopw.close()
+
+
 #获取每个基因含有的致病位点的数目
 gene_dict = {}
 for f in files:
@@ -80,7 +144,7 @@ for f in files:
                 count += 1
         gene_dict[str(f)] = count
 
-fopw = open('filteredGene.arff', 'w')
+fopw = open('filteredGeneCount.arff', 'w')
 for k, v in gene_dict.items():
     fopw.write(str(k)+":"+str(v)+'\n')
 fopw.close()
